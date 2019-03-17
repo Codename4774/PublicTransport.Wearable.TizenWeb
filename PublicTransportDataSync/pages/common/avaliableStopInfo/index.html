@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, user-scalable=no"/>
+	<title>Wearable UI</title>
+	<link rel="stylesheet" href="lib/tau/wearable/theme/default/tau.min.css">
+	<link rel="stylesheet" media="all and (-tizen-geometric-shape: circle)" href="lib/tau/wearable/theme/default/tau.circle.min.css">
+	<!-- load theme file for your application -->
+	<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+	<div class="ui-page" id="stopInfo">
+		<header>
+			<h2 class="ui-title" id="title">Stop info</h2>
+		</header>
+		<div class="ui-content content-padding" id="mainDiv">
+			<ul class="ui-listview" id="ulStopInfo">
+				<li class="ui-listview-divider" id="liStopHeader">Stop</li>
+				<li id="liStop">
+					<p id="stopName"></p>
+				</li>
+				<li class="ui-listview-divider" id="liRouteHeader">Route</li>
+				<li id="liRoute">
+					<p id="routeName"></p>
+					<p id="routeType"></p>
+				</li>
+				<li class="ui-listview-divider" id="liTimesHeader">Arrival times</li>
+				<li id="liTimes">
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>
