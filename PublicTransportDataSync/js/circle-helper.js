@@ -1,30 +1,41 @@
 window.app = window.app || {};
 
-/*global tau */
-/*jslint unparam: true */
-(function (tau) {
-	"use strict";
-	// This logic works only on circular device.
-	if (tau.support.shape.circle) {
-		/**
-		 * pagebeforeshow event handler
-		 * Do preparatory works and adds event listeners
-		 */
-		document.addEventListener("pagebeforeshow", function (event) {
-			/**
-			 * page - Active page element
-			 * list - NodeList object for lists in the page
-			 */
-			var page,
-				list;
+(function defineUiCircleHelper(app) {
+    'use strict';
 
-			page = event.target;
-			if (page.id !== "page-snaplistview" && page.id !== "page-swipelist" && page.id !== "page-marquee-list") {
-				list = page.querySelector(".ui-listview");
-				if (list) {
-					tau.widget.ArcListview(list);
-				}
-			}
-		});
-	}
-})(tau);
+    var createdSnapLists = [];
+
+    function onPageBeforeShow(event) {
+        var page = event.target,
+            i = 0,
+            lists = [].slice.call(page.querySelectorAll('.ui-listview'), 0),
+            length = lists.length;
+
+        for (i = 0; i < length; i += 1) {
+            createdSnapLists.push(tau.helper.SnapListStyle.create(lists[i]));
+        }
+    }
+
+    function onPageBeforeHide() {
+        var i = 0,
+            length = createdSnapLists.length;
+
+        for (i = 0; i < length; i += 1) {
+            createdSnapLists[i].destroy();
+        }
+
+        createdSnapLists = [];
+    }
+
+    function enableSnapListAutomaticCreation() {
+        if (!tau.support.shape.circle) {
+            return;
+        }
+
+        document.addEventListener('pagebeforeshow', onPageBeforeShow);
+        document.addEventListener('pagebeforehide', onPageBeforeHide);
+    }
+
+    enableSnapListAutomaticCreation();
+
+})(window.app);

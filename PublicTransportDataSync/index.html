@@ -47,29 +47,23 @@
 		<header>
 			<h2 class="ui-title" id="title">Stop info</h2>
 		</header>
+
 		<div class="ui-content content-padding" id="mainDiv">
-			<ul class="ui-listview" id="ulStopInfo">
-				<li class="ui-listview-divider" id="liStopHeader">Stop</li>
-				<li id="liStop">
-					<p id="stopName"></p>
-				</li>
-				<li class="ui-listview-divider" id="liRouteHeader">Route</li>
-				<li id="liRoute">
-					<p id="routeName"></p>
-					<p id="routeType"></p>
-				</li>
-				<li class="ui-listview-divider" id="liTimesHeader">Arrival times</li>
-				<li id="liTimes">
-				</li>
-			</ul>
+			<h3 class="ui-title" id="StopHeader">Stop info</h3>
+			<div id="StopName"></div>
+			<h3 class="ui-title" id="RouteHeader">Route info</h3>
+			<div id="RouteName"></div>
+			<div id="RouteType"></div>
+			<h3 class="ui-title" id="RouteHeader">Arrival times</h3>
+			<div id="Times"></div>
 		</div>
 	</div>
 	
-	<script src="lib/tau/wearable/js/tau.min.js"></script>
+	<script src="lib/tau/wearable/js/tau.js"></script>
 	<script src="lib/jquery/jquery-2.2.4-min.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/lowBatteryCheck.js"></script>
-	<script src="js/circle-helper.js"></script>
+	<!-- <script src="js/circle-helper.js"></script> -->
 	<script src="js/appData.js"></script>
 	<script src="js/commonLogic.js"></script>
 	<script src="js/pageMain.js"></script>
