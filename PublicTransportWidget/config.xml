@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="http://yourdomain/PublicTransportWidget" version="1.0.0" viewmodes="maximized">
+    <tizen:app-widget id="rpju8bFPIq.PublicTransportWidget.PublicTransportWidget" primary="true" max-instance="0">
+        <tizen:widget-label>Public transport</tizen:widget-label>
+        <tizen:widget-content src="widget/PublicTransportWidget/index.html">
+            <tizen:widget-size preview="widget/PublicTransportWidget/preview.png">2x2</tizen:widget-size>
+        </tizen:widget-content>
+    </tizen:app-widget>
+    <tizen:application id="rpju8bFPIq.PublicTransportWidget" package="rpju8bFPIq" required_version="2.3.2"/>
+    <content src="index.html"/>
+    <feature name="tizen.org/feature/screen.size.all"/>
+    <icon src="icon.png"/>
+    <name>PublicTransportWidget</name>
+    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+    <tizen:privilege name="http://tizen.org/privilege/filesystem.read"/>
+    <tizen:profile name="wearable"/>
+    <tizen:setting background-support="disable" encryption="disable" hwkey-event="enable"/>
+</widget>

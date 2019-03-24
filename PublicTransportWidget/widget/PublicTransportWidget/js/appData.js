@@ -4,30 +4,20 @@ window.app = window.app || {};
 	
 	function initAppData() {
 		try {
-			var reqAppControl = getRequestAppControl();
 			return {
 				isFileSyncProcessing : false,
 				lastTimeCheck : tizen.time.getCurrentDateTime().toDateString(),
 				stopsInfoData : getStopInfoTest(),
-				launchedFromWidget : 
-					reqAppControl.callerAppId && reqAppControl.callerAppId != "" ? 
-							true : false,
-				reqAppControl : reqAppControl
+				selectedStopInfo : null
 			};
 		} catch (e) {
 			return {
 				isFileSyncProcessing : false,
 				lastTimeCheck : "",
-				stopsInfoData : getStopInfoTest()
+				stopsInfoData : getStopInfoTest(),
+				selectedStopInfo : null
 			};
 		}
-	}
-	
-	function getRequestAppControl() {
-		var reqAppControl = tizen.application
-			.getCurrentApplication().getRequestedAppControl();
-		
-		return reqAppControl;
 	}
 	
 	function getStopInfoTest() {
