@@ -31,15 +31,22 @@ window.app = window.app || {};
 	}
 	
 	function showLoading(progressElement, button) {
-		progressElement.css('display', 'block');
-		button.html('Stop');
-	
-		setTimeout(function() {
-			console.log('redirect');
-			pageAvaliableStopsList_Init(app);		
-			tau.changePage('avaliableStopsList');
-			stopLoading(progressElement, button);
-		}, 5000);
+		try {
+			progressElement.css('display', 'block');
+			button.html('Stop');
+		
+			setTimeout(function() {
+				console.log('redirect');
+				var tizenTime = tizen.time.getCurrentDateTime();
+								
+				pageAvaliableStopsList_Init(app);		
+				tau.changePage('avaliableStopsList');
+				stopLoading(progressElement, button);
+			}, 5000);
+		}
+		catch(e) {
+			console.log(e);
+		}
 	}
 	
 	function stopLoading(progressElement, button) {

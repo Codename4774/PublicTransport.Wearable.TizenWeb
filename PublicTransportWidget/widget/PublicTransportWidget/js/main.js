@@ -39,8 +39,24 @@ window.app = window.app || {};
 		 	.textContent = data.stop_name;
 		 document.getElementById('divRouteName')
 		 	.textContent = data.route_short_name;
-		 document.getElementById('divTime')
-		 	.textContent = data.times[0];
+		 document.getElementById('divTimeArrive')
+		 	.textContent = data.times[0].str;
+	 }
+	 
+	 function startTimer(times, currentTizenTime) {
+		 var currentDisplayedTime = 
+			 app.getNearestArriveTime(times, currentTizenTime);
+		 updateDisplayedTime(currentDisplayedTime);
+		 setInterval(function() {
+			 currentDisplayedTime = 
+				app.getNextArriveTime(times, currentDisplayedTime);
+			 updateDisplayedTime(currentDisplayedTime);
+		 }, 1000);
+	 }
+	 
+	 function updateDisplayedTime(time) {
+		 document.getElementById('divTimeArrive')
+		 	.textContent = time;
 	 }
 	 
 	 function launchApp(title) {
