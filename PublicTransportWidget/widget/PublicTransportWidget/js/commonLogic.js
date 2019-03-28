@@ -91,9 +91,17 @@ window.app = window.app || {};
 	}
 	
 	function getNextArriveTime(times, currentArriveTime) {
-		var indexOfCurrentTime = times.indexOf(currentArriveTime);
+		var indexOfCurrentTime = -1;
+		var needToStop = false;
 		
-		if (indexOfCurrentTime > 0) {
+		for (var i = 0;(i < times.length) && !needToStop;i++) {
+			if (times[i].seconds == currentArriveTime.seconds) {
+				indexOfCurrentTime = i;
+				needToStop = true;
+			}
+		}
+		
+		if (indexOfCurrentTime >= 0) {
 			if (indexOfCurrentTime !== times.length - 1) {
 				return times[indexOfCurrentTime + 1];
 			}
@@ -136,12 +144,15 @@ window.app = window.app || {};
 			return times[0];
 		}
 		console.log("getNearestArriveTime find");
-		var resultTime = times.find(function(time) {
+
+		for (var i = 0; i < times.length; i++) {
 			console.log("getNearestArriveTime find func invoke");
-			return timeDiffSec(currentTime, time) <= 0;
-		});
+			if (timeDiffSec(currentTime, times[i]) <= 0) {
+				return times[i];
+			}
+		}
 		
-		return resultTime;
+		return null;
 	}
 	
 	function getArriveAfterMinutes(time, curHours, curMinutes, curSeconds) {

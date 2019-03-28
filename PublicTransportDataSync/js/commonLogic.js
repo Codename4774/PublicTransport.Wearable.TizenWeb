@@ -85,9 +85,11 @@ window.app = window.app || {};
 	}
 	
 	function getNextArriveTime(times, currentArriveTime) {
-		var indexOfCurrentTime = times.indexOf(currentArriveTime);
+		var indexOfCurrentTime = times.findIndex(function(element) {
+			return element.seconds == currentArriveTime.seconds;
+		});
 		
-		if (indexOfCurrentTime > 0) {
+		if (indexOfCurrentTime >= 0) {
 			if (indexOfCurrentTime !== times.length - 1) {
 				return times[indexOfCurrentTime + 1];
 			}
