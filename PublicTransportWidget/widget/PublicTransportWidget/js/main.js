@@ -2,77 +2,73 @@ window.app = window.app || {};
 
 (function(app) {
 	var pageID = 'main';
+	var updateArriveTimeDescr = null;
 	
-	 var appControlReplyCallback = {
-		     onsuccess: function(data) {
-		    	 console.log('Reply callback');
-		    	 console.log(data);
-		         for (var i = 0; i < data.length; i++) {
-		             if (data[i].key == "publicTansport_Result") {
-		            	 app.appData.selectedStopInfo = JSON.parse(data[i].value[0]);
-		                 console.log('Public transport widget. Selected transport is ' + data[i].value[0]);
-		            	 displayStopInfo(app.appData.selectedStopInfo);
-		             }
-		         }
-		     },
-
-		     onfailure: function() {
-		         console.log('Public transport widget. The launch application control failed');
+	var appControlReplyCallback = {
+		onsuccess: function(data) {
+		    console.log('Reply callback');
+		    console.log(data);
+		    for (var i = 0; i < data.length; i++) {
+		    	if (data[i].key == "publicTansport_Result") {
+		    		app.appData.selectedStopInfo = JSON.parse(data[i].value[0]);
+		            console.log('Public transport widget. Selected transport is ' + data[i].value[0]);
+		            displayStopInfo(app.appData.selectedStopInfo);
+		        }
 		     }
-		 };
+		 },
+		 onfailure: function() {
+			 console.log('Public transport widget. The launch application control failed');
+		 }
+	};
 	 
 	function displayStopInfo(data) {
 		 var pageInit = document.getElementById('pageInit');
 		 
 		 pageInit.style.display = 'none';
 		 
-		 fillStopInfo(data);		 
+		 initStopInfoDisplay(data);		 
 	 }
 	 
-	 function fillStopInfo(data) {
-		 var pageAvaliableStopsList = document
-		 	.getElementById('pageAvaliableStopsList');
+	function initStopInfoDisplay(data) {
+		var pageAvaliableStopsList = document
+			.getElementById('pageAvaliableStopsList');
 		 
-		 pageAvaliableStopsList.style.display = 'block';
+		pageAvaliableStopsList.style.display = 'block';
 		 
-		 document.getElementById('divStopName')
-		 	.textContent = data.stop_name;
-		 document.getElementById('divRouteName')
-		 	.textContent = data.route_short_name;
-		 document.getElementById('divTimeArrive')
-		 	.textContent = data.times[0].str;
-	 }
+		document.getElementById('divStopName')
+			.textContent = data.stop_name;
+		document.getElementById('divRouteName')
+			.textContent = "Route name: " + data.route_short_name;
+		
+		if (updateArriveTimeDescr !== null) {
+			clearInterval(updateArriveTimeDescr);
+		}
+		
+		updateArriveTimeDescr = app.setUpdateArriveTime(data.times, 
+			function(minutes) {
+				document.getElementById('divMinToArrive')
+					.textContent = minutes;
+			},
+			function(time) {
+				document.getElementById('divTimeArrive')
+				.textContent = "Next arrive time: " + time.str;
+			});
+	}
 	 
-	 function startTimer(times, currentTizenTime) {
-		 var currentDisplayedTime = 
-			 app.getNearestArriveTime(times, currentTizenTime);
-		 updateDisplayedTime(currentDisplayedTime);
-		 setInterval(function() {
-			 currentDisplayedTime = 
-				app.getNextArriveTime(times, currentDisplayedTime);
-			 updateDisplayedTime(currentDisplayedTime);
-		 }, 1000);
+	function launchApp(title) {
+		console.log('Public transport widget. app launch');
+		var app = window.tizen.application.getCurrentApplication();
+		var appControl = new window.tizen.ApplicationControl("http://tizen.org/appcontrol/operation/default",
+				null, null, null, null, null);
+		window.tizen.application.launchAppControl(appControl, title,
+				function() {
+	            	console.log("Public transport widget. launch application control succeed");
+	        	},
+	        	function(e) {
+	        		console.log("Public transport widget. launch application control failed. reason: " + e.message);
+	        	},
+	        	appControlReplyCallback);
 	 }
-	 
-	 function updateDisplayedTime(time) {
-		 document.getElementById('divTimeArrive')
-		 	.textContent = time;
-	 }
-	 
-	 function launchApp(title) {
-		 console.log('Public transport widget. app launch');
-		 var app = window.tizen.application.getCurrentApplication();
-		 var appControl = new window.tizen.ApplicationControl("http://tizen.org/appcontrol/operation/default"
-				 , null, null, null, null, null);
-		 window.tizen.application.launchAppControl(appControl, title,
-				 function() {
-                	console.log("Public transport widget. launch application control succeed");
-            	},
-            	function(e) {
-            		console.log("Public transport widget. launch application control failed. reason: " + e.message);
-            	},
-            	appControlReplyCallback);
-      }
 
     
 	function init() {

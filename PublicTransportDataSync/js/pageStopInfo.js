@@ -1,5 +1,6 @@
  function pageStopInfo_Init(app, stopInfo) {
 	var pageID = 'stopInfo';
+	var updateArriveTimeDescr = null;
 	
 	function loadData(data) {
 		try {
@@ -17,22 +18,24 @@
 				listControlTime.append($('<p>').html(time.str));
 			});
 			
-			var curTime = tizen.time.getCurrentDateTime();
-			var nearestArrive = app.getNearestArriveTime(data.times, curTime);
-			listControl.find('#NearestArrivalTime').html($('<p>')
-					.html('Nearest arrive time: ' + 
-							nearestArrive.str)
-				);
-			listControl.find('#NearestArrivalMinutes').html($('<p>')
-					.html('Next arrive after ' + 
-							app.getArriveAfterMinutes(nearestArrive, 
-									curTime.getHours(),
-									curTime.getMinutes(),
-									curTime.getSeconds()
-								) +
-							' minutes'
-						)
-				);
+			if (updateArriveTimeDescr !== null) {
+				clearInterval(updateArriveTimeDescr);
+			}
+			updateArriveTimeDescr = app.setUpdateArriveTime(data.times, function(minutes) {
+				listControl.find('#NearestArrivalMinutes').html($('<p>')
+						.html('Next arrive after ' + 
+								minutes +
+								' minutes'
+							)
+					);
+			},
+			function(time) {
+				listControl.find('#NearestArrivalTime').html($('<p>')
+						.html('Nearest arrive time: ' + 
+								time.str)
+					);
+			});
+			
 			initWidgetSendResultHandler(data);
 		}
 		catch(e) {

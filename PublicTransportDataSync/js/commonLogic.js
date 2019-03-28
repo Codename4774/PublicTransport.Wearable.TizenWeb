@@ -3,6 +3,7 @@ window.app = window.app || {};
 (function (app) {	
 	function initConstants(app) {
 		app.SELECTED_DATA_TO_DISPLAY_KEY = 'SELECTED_DATA';
+		app.UPDATE_TIME_TIMEOUT = 1000;
 	}
 	
 	function getElement(idPage, idElement) {
@@ -118,14 +119,12 @@ window.app = window.app || {};
 		return initTimeExObj(hours, minutes, seconds, tizenTime.toLocaleTimeString());
 	}
 	
-	function getNearestArriveTime(times, currentTizenTime) {
-		var currentTime = getTimeFormatFromTZDate(currentTizenTime);
-		
+	function getNearestArriveTime(times, currentTime) {	
 		var lastTime = times[times.length - 1];
 		var firstTime = times[0];
 		
 		if (timeDiffSec(currentTime, lastTime) >= 0 
-				|| timeDiffSec(firstTime, currentTime >= 0)) {
+				|| timeDiffSec(firstTime, currentTime) >= 0) {
 			return times[0];
 		}
 		
@@ -153,6 +152,43 @@ window.app = window.app || {};
 		}
 	}
 	
+	function setUpdateArriveTime(times, setNextTimeToArriveFunc, setNextArriveTimeFunc) {
+		try {
+			var currentTizenTime = tizen.time.getCurrentDateTime();
+			var currentTime = getTimeFormatFromTZDate(currentTizenTime);
+			var currentNextArrive = getNearestArriveTime(times, currentTime);
+			var arriveAfterMinutesValue = getArriveAfterMinutes(currentNextArrive, 
+					currentTizenTime.getHours(),
+					currentTizenTime.getMinutes(),
+					currentTizenTime.getSeconds());
+			
+			setNextArriveTimeFunc(currentNextArrive);
+			setNextTimeToArriveFunc(arriveAfterMinutesValue);
+			
+			var resultDescr = setInterval(function() {
+				currentTizenTime = tizen.time.getCurrentDateTime();
+				currentTime = getTimeFormatFromTZDate(currentTizenTime);
+				arriveAfterMinutesValue = getArriveAfterMinutes(currentNextArrive, 
+						currentTizenTime.getHours(),
+						currentTizenTime.getMinutes(),
+						currentTizenTime.getSeconds());
+				
+				setNextTimeToArriveFunc(arriveAfterMinutesValue);
+				
+				if (timeDiffSec(currentTime, currentNextArrive)  > 0) {
+					currentNextArrive = getNextArriveTime(times, currentNextArrive);
+					setNextArriveTimeFunc(currentNextArrive);
+				}
+			}, app.UPDATE_TIME_TIMEOUT);
+			
+			return resultDescr;
+		} catch (e) {
+			console.log(e);
+		}
+	}
+	
+	initConstants(app);
+	
 	app.getElement = getElement;
 	app.getRouteTypeStr = getRouteTypeStr;
 	app.getNearestArriveTime = getNearestArriveTime;
@@ -160,6 +196,6 @@ window.app = window.app || {};
 	app.getArriveAfterMinutes = getArriveAfterMinutes;
 	app.getTimesExInfoArray = getTimesExInfoArray;
 	app.convertTimes = convertTimes;
-	
-	initConstants(app);
+	app.setUpdateArriveTime = setUpdateArriveTime;
+		
 })(window.app);
