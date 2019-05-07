@@ -4,7 +4,7 @@
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></SignatureMethod>
 <Reference URI="author-signature.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>uZ+e0wF8Esbg6vbjjS4lEcx3RgR/lgUsa3jD6M/9qCM=</DigestValue>
+<DigestValue>Cdc2seV4ZeTVfKF1HIjU0IQnulgfUJpvpkUBTDUr4qI=</DigestValue>
 </Reference>
 <Reference URI="config.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -20,7 +20,7 @@
 </Reference>
 <Reference URI="widget%2FPublicTransportWidget%2Fcss%2Fstyle.css">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>8i6OXvYUk4inm0NMHmgg+YLoRcbQQ0hwfnc872wGnNc=</DigestValue>
+<DigestValue>XEtueKAsib1JtvLOocGAlZEXAVQsu1NFYPMNMlLF02Y=</DigestValue>
 </Reference>
 <Reference URI="widget%2FPublicTransportWidget%2Fimage%2Fadd.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -28,7 +28,7 @@
 </Reference>
 <Reference URI="widget%2FPublicTransportWidget%2Findex.html">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>tisB0PW2pGqSmp5FN23MdhIK8kFVlpTHo0NYBow6uZE=</DigestValue>
+<DigestValue>/kxbcMElF13eIACg6ddKLIrwdH12WxDlP4deu4/Fnr4=</DigestValue>
 </Reference>
 <Reference URI="widget%2FPublicTransportWidget%2Fjs%2Fapp.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -40,11 +40,11 @@
 </Reference>
 <Reference URI="widget%2FPublicTransportWidget%2Fjs%2FcommonLogic.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>ohUfI4IvBJlAjoDxE8TCrbbPp//3F7eUCUkcFCs3QbE=</DigestValue>
+<DigestValue>uy2bJYEAeYZFdVx1NPgX/h5w2FpPgPvqeuoIjYtkSQI=</DigestValue>
 </Reference>
 <Reference URI="widget%2FPublicTransportWidget%2Fjs%2Fmain.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>1r5XI636cHusxHx9p9Uik1m7k1lR212L+qsbOUEt40k=</DigestValue>
+<DigestValue>LF/4ilYxUB/uRQw+DYqBvwmvVZ55fN026j2IOrKPzbw=</DigestValue>
 </Reference>
 <Reference URI="widget%2FPublicTransportWidget%2Fpreview.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -59,11 +59,11 @@
 </Reference>
 </SignedInfo>
 <SignatureValue>
-WLTk8aJFq9gBvIhiZuZ5HWaZAtAP2bsUhgWUScO0r8BE/UphnTMVo4HSsZS67fTTw7rrl7K4Xvle
-Hg+y38bQB/FSf5R3SlV7bsec6SR9SttIZOHNsFJXckdLpm33mJajf5I23h2VA7jeahh4qoFp/VMQ
-g79OIYTpQneHlxq7ZayqNJ/s/ie/R62tg55Bpw35JGvExXIzGOICSMTzRKvK5WgV6RGuZa3SAYcO
-LYL89Q8QKlwnRFA36a156zQ4yQ8s0pcfkelOFm8+3MAT5xFSBNu/iJLLyMCsAjMmgXnqpNVBZbgK
-3UIsovLuWjAsEipcFbAstVzh0QIuXBnmodSx7g==
+kvrHqsX2mpxNXfEiP6zfC/QjXi2V/HBK9RJUy04y4y6uWJnE1n/qsHCRcEPc5dewpkeFz25275Wy
+sysIb8OCz6L9ypmgw/DAsZh535YbPPZ9v5ydFgXRohhhxBV06qjVL73HO4StQQipr1+M7Asi4CV9
+ja9fBBtiZoDnscWBmCvT/AM/GtuXa2Wi8yEaKbxmkbK/iDgsTxenZJpBGhdKPUGK4UVblFaHmA5J
+lVo0piOMlMFSgDE20nbCk868ixSnIG2/kHZPgReSseB28KOESluo3mlZo15JgO8TPDQyQ+CM6PzD
+e52nobtMGeQbG1u7Sep62al3/DxR+kNjd1QNIg==
 </SignatureValue>
 <KeyInfo>
 <X509Data>

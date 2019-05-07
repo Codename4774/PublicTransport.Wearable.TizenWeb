@@ -166,12 +166,11 @@ window.app = window.app || {};
 		return result;
 	}
 	
-	function convertTimes(dataArr, currentTime) {
-		for (var i = 0; i < dataArr.length; i++) {
-			dataArr[i].times = getTimesExInfoArray(dataArr[i].times, currentTime);
+	function convertTimes(data, currentTime) {
+		for (var i = 0; i < data.times.length; i++) {
+			data.times[i] = getTimesExInfoArray(data.times[i], currentTime);
 		}
-	}
-	
+	}	
 	
 	function setUpdateArriveTime(times, setNextTimeToArriveFunc, setNextArriveTimeFunc) {
 		try {

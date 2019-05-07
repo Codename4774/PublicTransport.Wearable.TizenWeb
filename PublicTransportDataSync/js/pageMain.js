@@ -5,20 +5,22 @@ window.app = window.app || {};
 	
 	function init() {
 		try {
+			app.finishLoading = finishLoading;
+			app.changeState = changeState;
 			app.getElement(pageID, 'lLastCheckInfo')
 				.html( app.appData.lastTimeCheck);	
 		} catch (e) {
 			console.log(e);
 		}
 		
-		app.getElement(pageID, 'btnSync').click(function() {
-			changeState('dProcessing', 'btnSync');
-		});
+		/*app.getElement(pageID, 'btnSync').click(function() {
+			changeState();
+		});*/
 	}
 
-	function changeState(idProgressContainer, idButton) {
-		var progressContainer = window.app.getElement(pageID, idProgressContainer);
-		var button = window.app.getElement(pageID, idButton);
+	function changeState() {
+		var progressContainer = window.app.getElement(pageID, 'dProcessing');
+		var button = window.app.getElement(pageID, 'btnSync');
 		
 		if (app.appData.isFileSyncProcessing) {
 			stopLoading(progressContainer, button);
@@ -34,15 +36,22 @@ window.app = window.app || {};
 		try {
 			progressElement.css('display', 'block');
 			button.html('Stop');
-		
-			setTimeout(function() {
-				console.log('redirect');
-				var tizenTime = tizen.time.getCurrentDateTime();
-								
-				pageAvaliableStopsList_Init(app);		
-				tau.changePage('avaliableStopsList');
-				stopLoading(progressElement, button);
-			}, 5000);
+		}
+		catch(e) {
+			console.log(e);
+		}
+	}
+	
+	function finishLoading() {
+		try {
+			console.log('redirect');
+			var tizenTime = tizen.time.getCurrentDateTime();
+			
+			//app.convertTimes(app.appData.stopsInfoData, tizenTime);
+			
+			pageAvaliableStopsList_Init(app);		
+			tau.changePage('avaliableStopsList');
+			stopLoading(progressElement, button);
 		}
 		catch(e) {
 			console.log(e);

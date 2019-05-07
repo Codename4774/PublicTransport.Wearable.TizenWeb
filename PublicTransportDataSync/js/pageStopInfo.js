@@ -5,12 +5,13 @@
 	function loadData(data) {
 		try {
 			var listControl = app.getElement(pageID, 'mainDiv');
-			
+			RouteDirection
 			listControl.find('#StopName').html($('<p>').html('Stop name: ' + data.stop_name));
 			listControl.find('#RouteName').html($('<p>').html('Route number: ' + data.route_short_name));
 			listControl.find('#RouteType').html($('<p>').html('Route type: ' + app.getRouteTypeStr(data.route_type)));
-	
-			var listControlTime = listControl.find('#Times');
+			listControl.find('#RouteDirection').html($('<p>').html('Direction: ' + data.direction));
+
+			/*var listControlTime = listControl.find('#Times');
 			
 			listControlTime.empty();
 			
@@ -35,7 +36,7 @@
 								time.str)
 					);
 			});
-			
+			*/
 			initWidgetSendResultHandler(data);
 		}
 		catch(e) {
@@ -51,6 +52,10 @@
 				var buttonSend = buttonFooter.find('#btnSendToWidget');
 				
 				buttonSend.click(function() {
+					var tizenTime = tizen.time.getCurrentDateTime();
+					
+					app.convertTimes(data, tizenTime);
+					
 					var dataWidgetResult = new tizen.ApplicationControlData(
 							"publicTansport_Result", [JSON.stringify(data)]);
 					

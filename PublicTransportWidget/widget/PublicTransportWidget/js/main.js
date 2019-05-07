@@ -38,13 +38,20 @@ window.app = window.app || {};
 		document.getElementById('divStopName')
 			.textContent = data.stop_name;
 		document.getElementById('divRouteName')
-			.textContent = "Route name: " + data.route_short_name;
+			.textContent = data.route_short_name + ' ' + app.getRouteTypeStr(data.route_type);
+		
+		document.getElementById('divDirection')
+		.textContent = data.direction;
 		
 		if (updateArriveTimeDescr !== null) {
 			clearInterval(updateArriveTimeDescr);
 		}
 		
-		updateArriveTimeDescr = app.setUpdateArriveTime(data.times, 
+		//var tizenTime = tizen.time.getCurrentDateTime();
+		
+		//app.convertTimes(data, tizenTime);
+		
+		updateArriveTimeDescr = app.setUpdateArriveTime(data.times[0], 
 			function(minutes) {
 				document.getElementById('divMinToArrive')
 					.textContent = minutes;

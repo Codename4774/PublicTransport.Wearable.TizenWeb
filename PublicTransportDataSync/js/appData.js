@@ -5,6 +5,7 @@ window.app = window.app || {};
 	function initAppData() {
 		try {
 			var reqAppControl = getRequestAppControl();
+			//initBluetooth();
 			return {
 				isFileSyncProcessing : false,
 				lastTimeCheck : tizen.time.getCurrentDateTime().toLocaleTimeString(),
@@ -21,6 +22,12 @@ window.app = window.app || {};
 				stopsInfoData : getStopInfoTest()
 			};
 		}
+	}
+	
+	function initBluetooth() {
+		var adapter = initAdapter();
+		
+		registerService(adapter);
 	}
 	
 	function getRequestAppControl() {
@@ -70,7 +77,7 @@ window.app = window.app || {};
 			
 			var curTime = tizen.time.getCurrentDateTime();
 			
-			app.convertTimes(data, curTime);
+			//app.convertTimes(data, curTime);
 			
 			return data;
 		}
@@ -79,5 +86,132 @@ window.app = window.app || {};
 		}
 	}
 	
+    function initAdapter() {
+        try {
+            var adapter = tizen.bluetooth.getDefaultAdapter();
+            registerService(adapter);
+        } catch (error) {
+            console.error('Unable to obtain default adapter', error);
+        }
+    }
+	
+    function registerService(adapter) {
+        try {
+            adapter.registerRFCOMMServiceByUUID(
+                app.SERVICE_UUID,
+                app.SERVICE_NAME,
+                onServiceRegistered,
+                onServiceRegistrationError
+            );
+        } catch (error) {
+            console.error('Unable to register service', error);
+        }
+    }
+    
+    function onServiceRegistered(handler) {
+        handler.onconnect = onServiceConnection;
+    }
+
+    function onServiceRegistrationError(error) {
+        console.error('Unable to register service', error);
+    }
+    
+    function onServiceConnection(socket) {
+    	app.appData.isFileSyncProcessing = true;
+    	app.changeState();
+        var session = {};
+        session.resultString = "";
+        try {
+            socket.onmessage = onServerSocketMessage.bind(null, socket, session);
+            socket.onclose = onServerSocketClose.bind(null, session);
+        } catch (error) {
+            console.error('Unable to read socket message data', error);
+            closeServerConnection(socket, session);
+            return;
+        }
+    }
+    
+    function onServerSocketMessage(socket, session) {
+        var message = null;
+
+        try {
+        	
+            message = socket.readData();
+            readedData = stringFromUTF8Array(message);
+            if (!(session.resultString + readedData).includes("{END}")) {
+            	session.resultString += readedData;
+            }
+            else {
+            	session.resultString += readedData;
+            	session.resultString = session.resultString.replace("\{END\}", "");
+            	app.appData.stopsInfoData = JSON.parse(session.resultString);
+            	session.resultString = "";
+            	app.appData.isFileSyncProcessing = false;
+            	app.finishLoading();
+            	app.changeState();
+            	socket.close();
+            }
+        } catch (error) {
+            console.error('Unable to read socket message data', error);
+            closeServerConnection(socket, session);
+            return;
+        }
+    }
+    
+    function onServerSocketClose(session) {
+        if (!session.cleaned) {
+            cleanServerConnection(session);
+        }
+    }
+    
+    function closeServerConnection(socket, session) {
+        cleanServerConnection(session);
+
+        try {
+            socket.close();
+        } catch (error) {
+            console.error('Error during closing server connection', error);
+        }
+    }
+    
+    function cleanServerConnection(session) {
+        if (session.stream) {
+            session.stream.close();
+            session.stream = null;
+        }
+
+        session.cleaned = true;
+    }
+    
+    function stringFromUTF8Array(data) { 
+      const extraByteMap = [ 1, 1, 1, 1, 2, 2, 3, 0 ];
+      var count = data.length;
+      var str = "";
+      
+      for (var index = 0;index < count;) {
+        var ch = data[index++];
+        if (ch & 0x80) {
+          var extra = extraByteMap[(ch >> 3) & 0x07];
+          if (!(ch & 0x40) || !extra || ((index + extra) > count))
+            return null;
+          
+          ch = ch & (0x3F >> extra);
+          for (;extra > 0;extra -= 1) {
+            var chx = data[index++];
+            if ((chx & 0xC0) != 0x80)
+              return null;
+            
+            ch = (ch << 6) | (chx & 0x3F);
+          }
+        }
+        
+        str += String.fromCharCode(ch);
+      }
+      
+      return str;
+    }
+    
+    app.initBluetooth = initBluetooth;
 	app.appData = initAppData();
+	initBluetooth();
 })(window.app);

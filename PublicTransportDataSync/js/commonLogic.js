@@ -2,6 +2,8 @@ window.app = window.app || {};
 
 (function (app) {	
 	function initConstants(app) {
+		app.SERVICE_UUID = '483A1980-991C-11E6-BDF4-0800200C9A66';
+		app.SERVICE_NAME = 'Files exchange service';
 		app.SELECTED_DATA_TO_DISPLAY_KEY = 'SELECTED_DATA';
 		app.UPDATE_TIME_TIMEOUT = 1000;
 	}
@@ -148,11 +150,20 @@ window.app = window.app || {};
 		return result;
 	}
 	
-	function convertTimes(dataArr, currentTime) {
+	/*function convertTimes(dataArr, currentTime) {
 		for (var i = 0; i < dataArr.length; i++) {
-			dataArr[i].times = getTimesExInfoArray(dataArr[i].times, currentTime);
+			for (var j = 0; j < dataArr[i].times.length; j++)
+			{
+				dataArr[i].times[j] = getTimesExInfoArray(dataArr[i].times[j], currentTime);
+			}
 		}
-	}
+	}*/
+	
+	function convertTimes(data, currentTime) {
+		for (var i = 0; i < data.times.length; i++) {
+			data.times[i] = getTimesExInfoArray(data.times[i], currentTime);
+		}
+	}	
 	
 	function setUpdateArriveTime(times, setNextTimeToArriveFunc, setNextArriveTimeFunc) {
 		try {
@@ -187,6 +198,10 @@ window.app = window.app || {};
 		} catch (e) {
 			console.log(e);
 		}
+	}
+	
+	function receiveDataFromMobile() {
+		
 	}
 	
 	initConstants(app);

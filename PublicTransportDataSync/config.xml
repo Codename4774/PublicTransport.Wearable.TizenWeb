@@ -3,8 +3,13 @@
     <tizen:application id="pLmC89hPPl.PublicTransportDataSync" package="pLmC89hPPl" required_version="2.3.2"/>
     <content src="index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal"/>
+    <feature name="tizen.org/feature/network.bluetooth"/>
     <icon src="icon.png"/>
     <name>PublicTransportDataSync</name>
+    <tizen:privilege name="http://tizen.org/privilege/bluetooth"/>
+    <tizen:privilege name="http://tizen.org/privilege/bluetooth.gap"/>
+    <tizen:privilege name="http://tizen.org/privilege/bluetooth.admin"/>
+    <tizen:privilege name="http://tizen.org/privilege/bluetooth.spp"/>
     <tizen:privilege name="http://tizen.org/privilege/application.info"/>
     <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
     <tizen:privilege name="http://tizen.org/privilege/filesystem.read"/>

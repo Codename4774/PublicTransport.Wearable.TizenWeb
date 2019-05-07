@@ -8,9 +8,13 @@
 		
 		data.forEach(function (stopInfo) {
 			listControl.append(
-					$('<li>').attr('id', 'avaliableStopsList_' + stopInfo.user_defined_name)
+					$('<li>')
 						.append($('<div>').append(
-									$('<p>').append(stopInfo.user_defined_name)
+									$('<p>').append(stopInfo.stop_name)
+								).append(
+									$('<p>').append(stopInfo.route_short_name)
+								).append(
+									$('<p>').append(stopInfo.direction)
 								)
 							)
 							.click(function() {
